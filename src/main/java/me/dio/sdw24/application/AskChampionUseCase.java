@@ -13,9 +13,10 @@ public record AskChampionUseCase(ChampionRepository repository) {
         Champion champion = repository.findById(championId) //busca o campeão por ID
                 .orElseThrow(() -> new ChampionNotFoundException(championId)); // caso ele não exista, lança a excessão que criamos
 
-        // TODO: Evoluir a lógica de negócio para considerar a integração com IAs Generativas.
+        String championContext = champion.generateContextByQuestion(question);
 
-        return "";
+        // TODO: Evoluir a lógica de negócio para considerar a integração com IAs Generativas.
+        return championContext;
     }
 
 

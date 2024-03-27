@@ -6,4 +6,14 @@ public record Champion(
         String role,
         String lore,
         String imageUrl) {
+
+    // criando contexto para as IAs
+    public String generateContextByQuestion(String question) {
+        return """
+                Pergunta: %s
+                Nome do Campeão: %s
+                Função: %s
+                Lore (História): %s                
+                """.formatted(question, this.name, this.role, this.lore);
+    }
 }
