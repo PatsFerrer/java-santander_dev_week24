@@ -3,20 +3,26 @@ package me.dio.sdw24.application;
 import me.dio.sdw24.domain.exception.ChampionNotFoundException;
 import me.dio.sdw24.domain.model.Champion;
 import me.dio.sdw24.domain.ports.ChampionRepository;
+import me.dio.sdw24.domain.ports.GenerativeAiService;
 
-import java.util.List;
-
-public record AskChampionUseCase(ChampionRepository repository) {
+public record AskChampionUseCase(ChampionRepository repository, GenerativeAiService genAiApi) {
 
     public String askChampion(Long championId, String question) {
 
         Champion champion = repository.findById(championId) //busca o campeão por ID
                 .orElseThrow(() -> new ChampionNotFoundException(championId)); // caso ele não exista, lança a excessão que criamos
 
-        String championContext = champion.generateContextByQuestion(question);
+        String context = champion.generateContextByQuestion(question);
+        String objective = """
+                Atue como um assistente com a habilidade de se comportar como os Campeões do League of Legends (LOL).
+                Responda perguntas incorporando a personalidade e estilo de um determinado Campeão.
+                Segue a pergunta, o nome do Campeão e sua respectiva lore (história):
+                
+                """;
 
-        // TODO: Evoluir a lógica de negócio para considerar a integração com IAs Generativas.
-        return championContext;
+        genAiApi.generateContent(objective, context);
+
+        return context;
     }
 
 
