@@ -5,7 +5,7 @@ import me.dio.sdw24.domain.model.Champion;
 import me.dio.sdw24.domain.ports.ChampionRepository;
 import me.dio.sdw24.domain.ports.GenerativeAiService;
 
-public record AskChampionUseCase(ChampionRepository repository, GenerativeAiService genAiApi) {
+public record AskChampionUseCase(ChampionRepository repository, GenerativeAiService genAiService) {
 
     public String askChampion(Long championId, String question) {
 
@@ -20,7 +20,7 @@ public record AskChampionUseCase(ChampionRepository repository, GenerativeAiServ
                 
                 """;
 
-        genAiApi.generateContent(objective, context);
+        genAiService.generateContent(objective, context);
 
         return context;
     }
